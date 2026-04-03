@@ -61,7 +61,7 @@
             const payload = parseJwt(response.credential);
             const email = payload.email;
             // Redirigir a la aplicación de Apps Script con el email como parámetro
-            const appUrl = "https://script.google.com/macros/s/AKfycbwhTgoo9eUGGnTGnA1a3xKS0mDdRi65Dcdp4WXr2jriiCwa3o0e0cF32hrlulaLzU6gZg/exec"; // <-- Reemplaza con tu URL real
+            const appUrl = "https://script.google.com/macros/s/AKfycbwhTgoo9eUGGnTGnA1a3xKS0mDdRi65Dcdp4WXr2jriiCwa3o0e0cF32hrlulaLzU6gZg/exec";  
             window.location.href = appUrl + "?userEmail=" + encodeURIComponent(email);
         }
 
