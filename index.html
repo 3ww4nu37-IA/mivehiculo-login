@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiVehículo - Iniciar sesión</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f2f5;
+        }
+        .login-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            color: #1e3a8a;
+        }
+        p {
+            color: #555;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo">🚗</div>
+        <h2>MiVehículo</h2>
+        <p>Accede con tu cuenta de Google para continuar</p>
+        <div id="g_id_onload"
+             data-client_id="40490088969-ir7jncvv0roul1c0pk4j2vegq7b2ep7u.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+             data-type="standard"
+             data-theme="outline"
+             data-size="large"
+             data-text="signin_with">
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            // Decodificar el token JWT para obtener el email
+            const payload = parseJwt(response.credential);
+            const email = payload.email;
+            // Redirigir a la aplicación de Apps Script con el email como parámetro
+            const appUrl = "https://script.google.com/macros/s/AKfycbwhTgoo9eUGGnTGnA1a3xKS0mDdRi65Dcdp4WXr2jriiCwa3o0e0cF32hrlulaLzU6gZg/exec"; // <-- Reemplaza con tu URL real
+            window.location.href = appUrl + "?userEmail=" + encodeURIComponent(email);
+        }
+
+        function parseJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+    </script>
+</body>
+</html>
